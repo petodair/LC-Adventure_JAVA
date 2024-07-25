@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -23,13 +24,17 @@ public class UI {
 	BufferedImage heart_full, heart_half, heart_blank;
 //	BufferedImage imagemChave;
 	public boolean messageOn = false;
-	public String message = "";
-	int messageCounter = 0;
+//	public String message = "";
+//	int messageCounter = 0;
+	ArrayList<String> message = new ArrayList<>();
+	ArrayList<Integer> messageCounter = new ArrayList<>();
 	public boolean gameFinished = false;
 	public String currentDialogue = "";
 	public int commandNum = 0;
 	BufferedImage bg;
 	public int titleScreenState = 0; // 0:primeira tela; 1:segunda tela
+	public int slotCol = 0;
+	public int slotRow = 0;
 
 	double playTime;
 	DecimalFormat dFormat = new DecimalFormat("#0.00");
@@ -68,10 +73,10 @@ public class UI {
 
 	}
 
-	public void showMessage(String text) {
+	public void addMessage(String text) {
 
-		message = text;
-		messageOn = true;
+		message.add(text);
+		messageCounter.add(0);
 	}
 	
 	public void dialogoInicial() {
@@ -92,21 +97,27 @@ public class UI {
 		g2.setColor(Color.white);
 
 		// TITLE STATE
-		if (gp.gameState == gp.titleState) {
+		if(gp.gameState == gp.titleState) {
 			drawTitleScreen();
 		}
 		// PLAY STATE
-		if (gp.gameState == gp.playState) {
+		if(gp.gameState == gp.playState) {
             drawPlayerLife();
+            drawMessage();
 		}
 		// PAUSE STATE
-		if (gp.gameState == gp.pauseState) {
+		if(gp.gameState == gp.pauseState) {
 			drawPauseScreen();
 		}
 		// DIALOGUE STATE
-		if (gp.gameState == gp.dialogueState) {
+		if(gp.gameState == gp.dialogueState) {
 			drawPlayerLife();
 			drawDialogueScreen();
+		}
+		// CHARACTER STATE
+		if(gp.gameState == gp.characterState) {
+			drawCharacterScreen();
+			drawInventory();
 		}
 	}
 	public void drawPlayerLife() {
@@ -138,6 +149,32 @@ public class UI {
 			x += gp.tileSize;
 		}
 		
+	}
+	public void drawMessage() {
+		
+		int messageX = gp.tileSize;
+		int messageY = gp.tileSize*4;
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 32F));
+		
+		for(int i = 0; i < message.size(); i++) {
+			
+			if(message.get(i) != null) {
+				
+				g2.setColor(Color.black);
+				g2.drawString(message.get(i), messageX+2, messageY+2);
+				g2.setColor(Color.white);
+				g2.drawString(message.get(i), messageX, messageY);
+				
+				int counter = messageCounter.get(i) + 1; //MESSAGE COUNTER++
+				messageCounter.set(i, counter);
+				messageY += 50;
+				
+				if(messageCounter.get(i) > 180) {
+					message.remove(i);
+					messageCounter.remove(i);
+				}
+			}
+		}
 	}
 	public void drawTitleScreen() {
 
@@ -280,7 +317,6 @@ public class UI {
 		}
 
 	}
-
 	public void drawDialogueScreen() {
 
 		// JANELA
@@ -299,7 +335,183 @@ public class UI {
 			y += 40;
 		}
 	}
-
+    public void drawCharacterScreen() {
+    	
+    	//CRIAR O FRAME
+    	final int frameX = gp.tileSize;
+    	final int frameY = gp.tileSize;
+    	final int frameWidth = gp.tileSize*5;
+    	final int frameHeight = gp.tileSize*10;
+    	drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+    	
+    	//TEXT
+    	g2.setColor(Color.white);
+    	g2.setFont(g2.getFont().deriveFont(32F));
+    	
+    	int textX = frameX + 20;
+    	int textY = frameY + gp.tileSize;
+    	final int lineHeight = 35;
+    	
+    	//NOMES
+    	g2.drawString(gp.player.nome, textX, textY);
+    	textY += lineHeight + 20;
+    	g2.drawString("Level", textX, textY);
+    	textY += lineHeight;
+    	g2.drawString("Saúde", textX, textY);
+    	textY += lineHeight;
+    	g2.drawString("Força", textX, textY);
+    	textY += lineHeight;
+    	g2.drawString("Destreza", textX, textY);
+    	textY += lineHeight;
+    	g2.drawString("Ataque", textX, textY);
+    	textY += lineHeight;
+    	g2.drawString("Defesa", textX, textY);
+    	textY += lineHeight;
+    	g2.drawString("Exp", textX, textY);
+    	textY += lineHeight;
+    	g2.drawString("Próximo Level", textX, textY);
+    	textY += lineHeight;
+    	g2.drawString("Moedas", textX, textY);
+    	textY += lineHeight + 20;
+    	g2.drawString("Arma", textX, textY);
+    	textY += lineHeight + 20;
+    	
+    	//VALORES
+    	int tailX = (frameX + frameWidth)-30;
+    	//Resetar textY
+    	textY = frameY + gp.tileSize + 56;
+    	String value;
+    	
+    	value = String.valueOf(gp.player.level);
+    	textX = getXforAlignToRightText(value, tailX);
+    	g2.drawString(value, textX, textY);
+    	textY += lineHeight;
+    	
+    	value = String.valueOf(gp.player.life + "/" + gp.player.maxLife);
+    	textX = getXforAlignToRightText(value, tailX);
+    	g2.drawString(value, textX, textY);
+    	textY += lineHeight;
+    	
+    	value = String.valueOf(gp.player.strength);
+    	textX = getXforAlignToRightText(value, tailX);
+    	g2.drawString(value, textX, textY);
+    	textY += lineHeight;
+    	
+    	value = String.valueOf(gp.player.dexterity);
+    	textX = getXforAlignToRightText(value, tailX);
+    	g2.drawString(value, textX, textY);
+    	textY += lineHeight;
+    	
+    	value = String.valueOf(gp.player.attack);
+    	textX = getXforAlignToRightText(value, tailX);
+    	g2.drawString(value, textX, textY);
+    	textY += lineHeight;
+    	
+    	value = String.valueOf(gp.player.defense);
+    	textX = getXforAlignToRightText(value, tailX);
+    	g2.drawString(value, textX, textY);
+    	textY += lineHeight;
+    	
+    	value = String.valueOf(gp.player.exp);
+    	textX = getXforAlignToRightText(value, tailX);
+    	g2.drawString(value, textX, textY);
+    	textY += lineHeight;
+    	
+    	value = String.valueOf(gp.player.nextLevelExp);
+    	textX = getXforAlignToRightText(value, tailX);
+    	g2.drawString(value, textX, textY);
+    	textY += lineHeight;
+    	
+    	value = String.valueOf(gp.player.coin);
+    	textX = getXforAlignToRightText(value, tailX);
+    	g2.drawString(value, textX, textY);
+    	textY += lineHeight + 20;
+    	
+    	if(gp.player.currentWeapon != null) {
+    		g2.drawImage(gp.player.currentWeapon.down1, tailX - gp.tileSize, textY-35, null);
+    		textY += gp.tileSize;
+    	}
+    	else {
+    		value = "X";
+        	textX = getXforAlignToRightText(value, tailX);
+        	g2.drawString(value, textX, textY);
+        	textY += lineHeight;
+    	}
+    }
+    
+    public void drawInventory() {
+    	
+    	//FRAME
+    	int frameX = gp.tileSize*9;
+    	int frameY = gp.tileSize;
+    	int frameWidth = gp.tileSize*6;
+    	int frameHeight = gp.tileSize*3;
+    	drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+    	
+    	//SLOT
+    	final int slotXstart = frameX + 20;
+    	final int slotYstart = frameY + 20;
+    	int slotX = slotXstart;
+    	int slotY = slotYstart;
+    	int slotSize = gp.tileSize+3;
+    	
+    	//DESENHAR ITEMS DO JOGADOR
+    	for(int i = 0; i < gp.player.inventory.size(); i++) {
+    		
+    		//EQUIPE CURSOR
+    		if(gp.player.inventory.get(i) == gp.player.currentWeapon || 
+    				gp.player.inventory.get(i) == gp.player.currentShield) {
+    			g2.setColor(new Color(240,190,90));
+    			g2.fillRoundRect(slotX, slotY, gp.tileSize, gp.tileSize, 10, 10);
+    		}
+    		
+    		g2.drawImage(gp.player.inventory.get(i).down1, slotX, slotY, null);
+    		
+    		slotX += slotSize;
+    		
+    		if(i == 4 || i == 9 || i == 14) {
+    			slotX = slotXstart;
+    			slotY += slotSize;
+    		}
+    	}
+    	
+    	//CURSOR
+    	int cursorX = slotXstart + (slotSize * slotCol);
+    	int cursorY = slotYstart + (slotSize * slotRow);
+    	int cursorWidth = gp.tileSize;
+    	int cursorHeight = gp.tileSize;
+    	
+    	//DESENHAR CURSOR
+    	g2.setColor(Color.white);
+    	g2.setStroke(new BasicStroke(3));
+    	g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 10, 10);
+    	
+    	//QUADRO DE DESCRIÇÃO
+    	int dFrameX = frameX;
+    	int dFrameY = frameY + frameHeight;
+    	int dFrameWidth = frameWidth;
+    	int dFrameHeight = gp.tileSize*5;
+    	
+    	//DESENHAR TEXTO DA DESCRIÇÃO
+    	int textX = dFrameX + 20;
+    	int textY = dFrameY + gp.tileSize;
+    	g2.setFont(g2.getFont().deriveFont(23F));
+    	
+    	int itemIndex = getItemIndexOnSlot();
+    	if(itemIndex < gp.player.inventory.size()) {
+    		
+    		drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
+    		
+    		for(String line: gp.player.inventory.get(itemIndex).detalhes.split("\n")) {
+    			g2.drawString(line, textX, textY);
+    			textY += 32;
+    		}
+    	}
+    }
+    public int getItemIndexOnSlot() {
+    	int itemIndex = slotCol + (slotRow*5);
+    	return itemIndex;
+    }
 	public void drawSubWindow(int x, int y, int width, int height) {
 
 		Color c = new Color(0, 0, 0, 210); // O ULTIMO NUMERO INDICA A OPACIDADE
@@ -323,7 +535,11 @@ public class UI {
 		g2.drawString(text, x, y);
 
 	}
-
+	public int getXforAlignToRightText(String text, int tailX) {
+		int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+		int x = tailX - length;
+		return x;
+	}
 	public int getXForCenteredText(String text) {
 
 		int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();

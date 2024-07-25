@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import main.GamePanel;
 import main.KeyHandler;
@@ -18,6 +19,8 @@ public class Player extends Entity {
 
 	public String nome;
 	public boolean attackCanceled = false;
+	public ArrayList<Entity> inventory = new ArrayList<>();
+	public int maxInventorySize = 10; 
 
 	public Player(GamePanel gp, KeyHandler keyH) {
 
@@ -40,14 +43,15 @@ public class Player extends Entity {
 		solidArea.width = 32;
 		solidArea.height = 32;
 		
-		attackArea.width = 36;
-		attackArea.height = 36;
+		//attackArea.width = 36;
+		//attackArea.height = 36;
 
 		nome = "Viajante";
 
 		setDefaultValues();
 		getPlayerImage();
 		getPlayerAttackImage();
+		setItems();
 	}
 
 	public void setDefaultValues() {
@@ -70,9 +74,13 @@ public class Player extends Entity {
 		maxLife = 6;
 		life = maxLife;
 	}
+	public void setItems() {
+		
+	}
 	public int getAttack() {
 		attack = 1;
 		if(currentWeapon != null) {
+			attackArea = currentWeapon.attackArea;
 			attack = strength * currentWeapon.attackValue;
 		}
 		return attack;
@@ -91,14 +99,19 @@ public class Player extends Entity {
 	}
 
 	public void getPlayerAttackImage() {
-		attackUp1 = setup("/player/charm_attack_up1", gp.tileSize, gp.tileSize * 2);
-		attackUp2 = setup("/player/charm_attack_up2", gp.tileSize, gp.tileSize * 2);
-		attackDown1 = setup("/player/charm_attack_down1", gp.tileSize, gp.tileSize * 2);
-		attackDown2 = setup("/player/charm_attack_down2", gp.tileSize, gp.tileSize * 2);
-		attackLeft1 = setup("/player/charm_attack_left1", gp.tileSize * 2, gp.tileSize);
-		attackLeft2 = setup("/player/charm_attack_left2", gp.tileSize * 2, gp.tileSize);
-		attackRight1 = setup("/player/charm_attack_right1", gp.tileSize * 2, gp.tileSize);
-		attackRight2 = setup("/player/charm_attack_right2", gp.tileSize * 2, gp.tileSize);
+		
+		if(currentWeapon != null) {
+			if(currentWeapon.name.equals("Graveto")) {
+				attackUp1 = setup("/player/charm_attack_up1", gp.tileSize, gp.tileSize * 2);
+				attackUp2 = setup("/player/charm_attack_up2", gp.tileSize, gp.tileSize * 2);
+				attackDown1 = setup("/player/charm_attack_down1", gp.tileSize, gp.tileSize * 2);
+				attackDown2 = setup("/player/charm_attack_down2", gp.tileSize, gp.tileSize * 2);
+				attackLeft1 = setup("/player/charm_attack_left1", gp.tileSize * 2, gp.tileSize);
+				attackLeft2 = setup("/player/charm_attack_left2", gp.tileSize * 2, gp.tileSize);
+				attackRight1 = setup("/player/charm_attack_right1", gp.tileSize * 2, gp.tileSize);
+				attackRight2 = setup("/player/charm_attack_right2", gp.tileSize * 2, gp.tileSize);
+			}
+		}
 	}
 
 	public void update() {
@@ -233,22 +246,31 @@ public class Player extends Entity {
 	}
 	// PEGAR OBJETO
 	public void pickUpObject(int i) {
+		
+		String text = "";
 
 		if (i != 999) {
-
+			
 			String objectName = gp.obj[i].name;
-
-			switch (objectName) {
-			case "Graveto":
-				currentWeapon = new OBJ_Graveto(gp);
-				gp.obj[0] = null;
-				gp.ui.currentDialogue = "Você encontrou um graveto!\n" + "bem impressionante, não é?";
-				gp.gameState = gp.dialogueState;
-				break;
+			
+			if(inventory.size() != maxInventorySize) {
+				
+				inventory.add(gp.obj[i]);
+				gp.obj[i] = null;
+				
+				switch (objectName) {
+				case "Graveto":
+					equipWeapon(inventory.get(i));
+					gp.ui.currentDialogue = "Você encontrou um graveto!\n" + "bem impressionante, não é?";
+					gp.gameState = gp.dialogueState;
+					break;
+				}
 			}
-
+			else {
+				text = "Você não pode carregar mais nada!";
+			}
+ 			gp.ui.addMessage(text);
 		}
-
 	}
 
 	public void interactNPC(int i) {
@@ -267,9 +289,15 @@ public class Player extends Entity {
 
 		if (i != 999) {
 
-			if (invencible == false) {
+			if (invencible == false && gp.monster[i].dying) {
 				gp.playSE(6);
-				life -= 1;
+				
+				int damage = gp.monster[i].attack - defense;
+				if(damage < 0) {
+					damage = 0;
+				}
+				
+				life -= damage;
 				invencible = true;
 			}
 		}
@@ -279,15 +307,72 @@ public class Player extends Entity {
 			
 			if(gp.monster[i].invencible == false) {
 				gp.playSE(5);
-				gp.monster[i].life -= 1;
+				
+				int damage = attack - gp.monster[i].defense;
+				if(damage < 0) {
+					damage = 0;
+				}
+				gp.monster[i].life -= damage;
+				gp.ui.addMessage("causou " + damage + " de dano!");
+				
+				//MOSTRAR DANO CAUSADO
+				gp.monster[i].receivedDamage = damage;
+				gp.monster[i].damageInfoOn = true;
+				
 				gp.monster[i].invencible = true;
 				gp.monster[i].damageReaction();
 				
 				if(gp.monster[i].life <= 0) {
 					gp.monster[i].dying = true;
+					gp.ui.addMessage("derrotou " + gp.monster[i].name + "!");
+					gp.ui.addMessage("+" + gp.monster[i].exp + "exp!");
+					exp += gp.monster[i].exp;
+					checkLevelUp();
 				}
 			}
 		}
+	}
+	
+	public void checkLevelUp() {
+		
+		if(exp >= nextLevelExp) {
+			
+			level++;
+			nextLevelExp = nextLevelExp*2;
+			maxLife += 2;
+			strength++;
+			dexterity++;
+			attack = getAttack();
+			defense++;
+			
+			gp.gameState = gp.dialogueState;
+			gp.ui.currentDialogue = "Você chegou ao nível " + level + "!\n"
+					+ "Você está mais forte agora!";
+		}
+	}
+	
+	public void selectItem() {
+		
+		int itemIndex = gp.ui.getItemIndexOnSlot();
+		
+		if(itemIndex < inventory.size()) {
+			Entity selectedItem = inventory.get(itemIndex);
+			
+			if(selectedItem.type == type_sword || selectedItem.type == type_axe
+					|| selectedItem.type == type_incomum) {
+				equipWeapon(selectedItem);
+			}
+			if(selectedItem.type == type_consumable) {
+				
+				// depois
+			}
+		}
+	}
+	
+	public void equipWeapon(Entity weapon) {
+		currentWeapon = weapon;
+		getAttack();
+		getPlayerAttackImage();
 	}
 
 	public void draw(Graphics2D g2) {

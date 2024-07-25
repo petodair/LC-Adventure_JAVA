@@ -14,11 +14,14 @@ public class MON_Blueberdito extends Entity{
 		
 		this.gp = gp;
 		
-		type=2;
+		type = type_monster;
 		name = "Blueberdito";
 		speed = 1;
 		maxLife = 4;
 		life = maxLife;
+		attack = 5;
+		defense = 0;
+		exp = 3;
 		
 		solidArea.x = 12;
 		solidArea.y = 12;

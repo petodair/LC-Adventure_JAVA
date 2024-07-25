@@ -25,13 +25,19 @@ public class AssetSetter {
 	   //gp.npc[0].worldY = gp.tileSize*13;
 	}
 	public void setMonster() {
-		gp.monster[0] = new MON_Blueberdito(gp);
-		gp.monster[0].worldX = gp.tileSize * 28;
-		gp.monster[0].worldY = gp.tileSize * 18;
-		
-		gp.monster[1] = new MON_Blueberdito(gp);
-		gp.monster[1].worldX = gp.tileSize * 46;
-		gp.monster[1].worldY = gp.tileSize * 42;
+		int i = 0;
+		gp.monster[i] = new MON_Blueberdito(gp);
+		gp.monster[i].worldX = gp.tileSize * 28;
+		gp.monster[i].worldY = gp.tileSize * 18;
+		i++;
+		gp.monster[i] = new MON_Blueberdito(gp);
+		gp.monster[i].worldX = gp.tileSize * 46;
+		gp.monster[i].worldY = gp.tileSize * 42;
+		i++;
+		gp.monster[i] = new MON_Blueberdito(gp);
+		gp.monster[i].worldX = gp.tileSize * 48;
+		gp.monster[i].worldY = gp.tileSize * 41;
+		i++;
 	}
 	
 	
