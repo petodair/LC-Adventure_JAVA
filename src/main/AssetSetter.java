@@ -1,6 +1,7 @@
 package main;
 
 import enemies.MON_Blueberdito;
+import object.OBJ_Blueberry;
 import object.OBJ_Graveto;
 
 public class AssetSetter {
@@ -13,11 +14,15 @@ public class AssetSetter {
 	}
 	
 	public void setObject() {
-		
-		gp.obj[0] = new OBJ_Graveto(gp);
-		gp.obj[0].worldX = gp.tileSize * 19;
-		gp.obj[0].worldY = gp.tileSize * 57;
-		
+		int i = 0;
+		gp.obj[i] = new OBJ_Graveto(gp);
+		gp.obj[i].worldX = gp.tileSize * 19;
+		gp.obj[i].worldY = gp.tileSize * 57;
+		i++;
+		gp.obj[i] = new OBJ_Blueberry(gp);
+		gp.obj[i].worldX = gp.tileSize * 28;
+		gp.obj[i].worldY = gp.tileSize * 18;
+		i++;
 	}
 	public void setNPC() {
 	   //gp.npc[0] = new NPC_OldMan(gp);
@@ -26,10 +31,6 @@ public class AssetSetter {
 	}
 	public void setMonster() {
 		int i = 0;
-		gp.monster[i] = new MON_Blueberdito(gp);
-		gp.monster[i].worldX = gp.tileSize * 28;
-		gp.monster[i].worldY = gp.tileSize * 18;
-		i++;
 		gp.monster[i] = new MON_Blueberdito(gp);
 		gp.monster[i].worldX = gp.tileSize * 46;
 		gp.monster[i].worldY = gp.tileSize * 42;

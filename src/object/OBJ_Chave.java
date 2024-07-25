@@ -9,7 +9,7 @@ public class OBJ_Chave extends Entity{
 		super(gp);
 		
 		name = "Chave";
-		down1 = setup("/objects/key", gp.tileSize, gp.tileSize);
+		down1 = setup("/objects/chave", gp.tileSize, gp.tileSize);
 		
 	}
 

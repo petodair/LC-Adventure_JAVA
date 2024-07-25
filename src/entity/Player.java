@@ -258,18 +258,19 @@ public class Player extends Entity {
 				inventory.add(gp.obj[i]);
 				gp.obj[i] = null;
 				
-				switch (objectName) {
-				case "Graveto":
+				if(objectName.equals("Graveto")) {
 					equipWeapon(inventory.get(i));
 					gp.ui.currentDialogue = "Você encontrou um graveto!\n" + "bem impressionante, não é?";
-					gp.gameState = gp.dialogueState;
-					break;
 				}
+				else {
+					gp.ui.currentDialogue = "Você encontrou " + objectName + "!";
+				}
+				
 			}
 			else {
-				text = "Você não pode carregar mais nada!";
+				gp.ui.currentDialogue = "Você não pode carregar mais nada!";
 			}
- 			gp.ui.addMessage(text);
+			gp.gameState = gp.dialogueState;
 		}
 	}
 
