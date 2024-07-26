@@ -3,6 +3,9 @@ package main;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import entity.PlayerM;
+import entity.PlayerW;
+
 public class KeyHandler implements KeyListener {
 
 	GamePanel gp;
@@ -94,6 +97,9 @@ public class KeyHandler implements KeyListener {
 			if (code == KeyEvent.VK_ENTER) {
 				gp.ui.titleScreenState = 2;
 				gp.campoNome.setFocusable(true);
+				
+				if(gp.ui.commandNum == 0) {gp.player = new PlayerM(gp, this);}
+				if(gp.ui.commandNum == 1) {gp.player = new PlayerW(gp, this);}
 
 				gp.ui.commandNum = 0;
 			}
@@ -126,7 +132,6 @@ public class KeyHandler implements KeyListener {
 			if (code == KeyEvent.VK_ENTER) {
 				if (gp.ui.commandNum == 0) {
 					gp.gameState = gp.playState;
-					gp.playMusic(0);
 					gp.ui.dialogoInicial();
 				}
 				if (gp.ui.commandNum == 1) {

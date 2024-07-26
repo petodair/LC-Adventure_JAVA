@@ -339,10 +339,15 @@ public class UI {
     	
     	//CRIAR O FRAME
     	final int frameX = gp.tileSize;
-    	final int frameY = gp.tileSize;
-    	final int frameWidth = gp.tileSize*5;
-    	final int frameHeight = gp.tileSize*10;
+    	final int frameY = gp.tileSize - 20;
+    	final int frameWidth = gp.tileSize*6;
+    	final int frameHeight = gp.tileSize*11;
     	drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+    	
+    	//IMAGEM DO PERSONAGEM
+    	g2.setColor(Color.white);
+    	g2.drawImage(gp.player.faceImage1, frameX + 165, frameY + 25, null);
+    	g2.drawRoundRect(frameX + 165, frameY + 25, gp.tileSize*2, gp.tileSize*2, 10, 10);
     	
     	//TEXT
     	g2.setColor(Color.white);
@@ -354,7 +359,7 @@ public class UI {
     	
     	//NOMES
     	g2.drawString(gp.player.nome, textX, textY);
-    	textY += lineHeight + 20;
+    	textY += lineHeight + 75;
     	g2.drawString("Level", textX, textY);
     	textY += lineHeight;
     	g2.drawString("Saúde", textX, textY);
@@ -379,7 +384,7 @@ public class UI {
     	//VALORES
     	int tailX = (frameX + frameWidth)-30;
     	//Resetar textY
-    	textY = frameY + gp.tileSize + 56;
+    	textY = frameY + gp.tileSize + 109;
     	String value;
     	
     	value = String.valueOf(gp.player.level);

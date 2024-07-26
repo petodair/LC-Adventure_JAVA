@@ -13,10 +13,11 @@ import object.OBJ_Graveto;
 public class Player extends Entity {
 
 	KeyHandler keyH;
-
+	
 	public final int screenX;
 	public final int screenY;
 
+	public BufferedImage faceImage1;
 	public String nome;
 	public boolean attackCanceled = false;
 	public ArrayList<Entity> inventory = new ArrayList<>();
