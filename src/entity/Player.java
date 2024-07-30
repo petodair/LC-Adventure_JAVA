@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import main.GamePanel;
 import main.KeyHandler;
-import object.OBJ_Graveto;
+import object.OBJ_PositiveEnergyPure;
 
 public class Player extends Entity {
 
@@ -67,6 +67,7 @@ public class Player extends Entity {
 		exp = 0;
 		nextLevelExp = 5;
 		coin = 0;
+		projectile = new OBJ_PositiveEnergyPure(gp);
 		attack = getAttack();
 		defense = 1;
 		
@@ -74,6 +75,8 @@ public class Player extends Entity {
 		level = 1;
 		maxLife = 6;
 		life = maxLife;
+		maxPositiveEnergy = 8;
+		positiveEnergy = maxPositiveEnergy;
 	}
 	public void setItems() {
 		
@@ -176,6 +179,7 @@ public class Player extends Entity {
 			
 			if(keyH.enterPressed == true && attackCanceled == false && currentWeapon != null) {
 				attacking = true;
+				gp.playSE(4);
 				spriteCounter = 0;
 			}
 			attackCanceled = false;
@@ -193,6 +197,24 @@ public class Player extends Entity {
 				spriteCounter = 0;
 			}
 		}
+		
+		//DISPARAR PROJÉTIL
+		if(gp.keyH.shotKeyPressed == true && projectile.alive == false && shotAvailableCounter == 30 
+				&& projectile.haveResource(this) == true) {
+			
+			//DEFINIR COORDENADAS, DIREÇÃO E USUARIO PADRÕES
+			projectile.set(worldX, worldY, direction, true, this);
+		
+			//SUBTRAIR CUSTO (ENERGIA POSITIVA, FLECHAS ETC.)
+			projectile.subtractResource(this);
+			
+			//ADICIONAR NA LISTA
+			gp.projectileList.add(projectile);
+			
+			shotAvailableCounter = 0;
+			
+			gp.playSE(8);
+		}
 
 		if (invencible == true) {
 			invencibleCounter++;
@@ -200,6 +222,9 @@ public class Player extends Entity {
 				invencible = false;
 				invencibleCounter = 0;
 			}
+		}
+		if (shotAvailableCounter < 30) {
+			shotAvailableCounter++;
 		}
 	}
 	public void attacking() {
@@ -230,7 +255,7 @@ public class Player extends Entity {
 			solidArea.height = attackArea.height;
 			
 			int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-			damageMonster(monsterIndex);
+			damageMonster(monsterIndex, attack);
 			
 			worldX = currentWorldX;
 			worldY = currentWorldY;
@@ -260,7 +285,6 @@ public class Player extends Entity {
 				gp.obj[i] = null;
 				
 				if(objectName.equals("Graveto")) {
-					equipWeapon(inventory.get(i));
 					gp.ui.currentDialogue = "Você encontrou um graveto!\n" + "bem impressionante, não é?";
 				}
 				else {
@@ -271,6 +295,7 @@ public class Player extends Entity {
 			else {
 				gp.ui.currentDialogue = "Você não pode carregar mais nada!";
 			}
+			gp.playSE(1);
 			gp.gameState = gp.dialogueState;
 		}
 	}
@@ -304,7 +329,7 @@ public class Player extends Entity {
 			}
 		}
 	}
-	public void damageMonster(int i) {
+	public void damageMonster(int i, int attack) {
 		if (i != 999) {
 			
 			if(gp.monster[i].invencible == false) {
@@ -347,6 +372,8 @@ public class Player extends Entity {
 			attack = getAttack();
 			defense++;
 			
+			gp.playSE(2);
+			
 			gp.gameState = gp.dialogueState;
 			gp.ui.currentDialogue = "Você chegou ao nível " + level + "!\n"
 					+ "Você está mais forte agora!";
@@ -366,7 +393,8 @@ public class Player extends Entity {
 			}
 			if(selectedItem.type == type_consumable) {
 				
-				// depois
+				selectedItem.use(this);
+				inventory.remove(itemIndex);
 			}
 		}
 	}

@@ -16,13 +16,15 @@ public class Sound {
 	
 	public Sound() {
 		
-		soundURL[0] = getClass().getResource("/sound/overWorldTheme.wav");
-		soundURL[1] = getClass().getResource("/sound/coin.wav");
-		soundURL[2] = getClass().getResource("/sound/powerup.wav");
-		soundURL[3] = getClass().getResource("/sound/unlock.wav");
-		soundURL[4] = getClass().getResource("/sound/fanfare.wav");
-		soundURL[5] = getClass().getResource("/sound/hitmonster.wav");
-		soundURL[6] = getClass().getResource("/sound/receivedamage.wav");
+		soundURL[0] = getClass().getResource("/sound/overworld2.wav");
+		soundURL[1] = getClass().getResource("/sound/coletar_item.wav");
+		soundURL[2] = getClass().getResource("/sound/levelup.wav");
+		soundURL[3] = getClass().getResource("/sound/useItem.wav");
+		soundURL[4] = getClass().getResource("/sound/attack.wav");
+		soundURL[5] = getClass().getResource("/sound/hit_monster.wav");
+		soundURL[6] = getClass().getResource("/sound/hit_player.wav");
+		soundURL[7] = getClass().getResource("/sound/select.wav");
+		soundURL[8] = getClass().getResource("/sound/energy.wav");
 		
 		
 	}

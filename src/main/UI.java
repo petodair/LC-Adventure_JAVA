@@ -15,13 +15,14 @@ import javax.imageio.ImageIO;
 
 import entity.Entity;
 import object.OBJ_Heart;
+import object.OBJ_PositiveEnergy;
 
 public class UI {
 
 	GamePanel gp;
 	Graphics2D g2;
 	Font maruMonica, superNormal, superScribble, dinofiles, solidLinker;
-	BufferedImage heart_full, heart_half, heart_blank;
+	BufferedImage heart_full, heart_half, heart_blank, positiveEnergy_full, positiveEnergy_half, positiveEnergy_blank;
 //	BufferedImage imagemChave;
 	public boolean messageOn = false;
 //	public String message = "";
@@ -70,6 +71,11 @@ public class UI {
 		heart_full = heart.image;
 		heart_half = heart.image2;
 		heart_blank = heart.image3;
+		Entity positiveEnergy = new OBJ_PositiveEnergy(gp);
+		positiveEnergy_full = positiveEnergy.image;
+		positiveEnergy_half = positiveEnergy.image2;
+		positiveEnergy_blank = positiveEnergy.image3;
+		
 
 	}
 
@@ -149,6 +155,30 @@ public class UI {
 			x += gp.tileSize;
 		}
 		
+		//DESENHA ENERGIA MAXIMA
+		x = (gp.tileSize/2)-2;
+		y = (int)(gp.tileSize*1.5);
+		i = 0;
+		
+		while(i < gp.player.maxPositiveEnergy/2) {
+			g2.drawImage(positiveEnergy_blank, x, y, null);
+			i++;
+			x += gp.tileSize;
+		}
+		
+		x = (gp.tileSize/2)-2;
+		y = (int)(gp.tileSize*1.5);
+		i = 0;
+		
+		while(i < gp.player.positiveEnergy) {
+			g2.drawImage(positiveEnergy_half, x, y, null);
+			i++;
+			if(i < gp.player.positiveEnergy) {
+				g2.drawImage(positiveEnergy_full, x, y, null);
+			}
+			i++;
+			x += gp.tileSize;
+		}
 	}
 	public void drawMessage() {
 		

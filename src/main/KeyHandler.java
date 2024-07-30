@@ -10,7 +10,7 @@ public class KeyHandler implements KeyListener {
 
 	GamePanel gp;
 
-	public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
+	public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shotKeyPressed;
 	// DEGUB
 	boolean showDebugText = false;
 
@@ -57,12 +57,14 @@ public class KeyHandler implements KeyListener {
 		if (gp.ui.titleScreenState == 0) {
 			if (code == KeyEvent.VK_W) {
 				gp.ui.commandNum--;
+				gp.playSE(7);
 				if (gp.ui.commandNum < 0) {
 					gp.ui.commandNum = 2;
 				}
 			}
 			if (code == KeyEvent.VK_S) {
 				gp.ui.commandNum++;
+				gp.playSE(7);
 				if (gp.ui.commandNum > 2) {
 					gp.ui.commandNum = 0;
 				}
@@ -70,6 +72,7 @@ public class KeyHandler implements KeyListener {
 			if (code == KeyEvent.VK_ENTER) {
 				if (gp.ui.commandNum == 0) {
 					gp.ui.titleScreenState = 1;
+					gp.playSE(1);
 				}
 				if (gp.ui.commandNum == 1) {
 					// LATER
@@ -84,12 +87,14 @@ public class KeyHandler implements KeyListener {
 		else if (gp.ui.titleScreenState == 1) {
 			if (code == KeyEvent.VK_W) {
 				gp.ui.commandNum--;
+				gp.playSE(7);
 				if (gp.ui.commandNum < 0) {
 					gp.ui.commandNum = 1;
 				}
 			}
 			if (code == KeyEvent.VK_S) {
 				gp.ui.commandNum++;
+				gp.playSE(7);
 				if (gp.ui.commandNum > 1) {
 					gp.ui.commandNum = 0;
 				}
@@ -100,6 +105,7 @@ public class KeyHandler implements KeyListener {
 				
 				if(gp.ui.commandNum == 0) {gp.player = new PlayerM(gp, this);}
 				if(gp.ui.commandNum == 1) {gp.player = new PlayerW(gp, this);}
+				gp.playSE(1);
 
 				gp.ui.commandNum = 0;
 			}
@@ -113,13 +119,15 @@ public class KeyHandler implements KeyListener {
 
 			if (code == KeyEvent.VK_A) {
 				gp.ui.commandNum++;
+				gp.playSE(7);
 				if (gp.ui.commandNum > 1) {
-					gp.ui.commandNum = 0;
+					gp.ui.commandNum = 0;					
 				}
 			}
 
 			if (code == KeyEvent.VK_D) {
 				gp.ui.commandNum++;
+				gp.playSE(7);
 				if (gp.ui.commandNum > 1) {
 					gp.ui.commandNum = 0;
 				}
@@ -131,8 +139,10 @@ public class KeyHandler implements KeyListener {
 
 			if (code == KeyEvent.VK_ENTER) {
 				if (gp.ui.commandNum == 0) {
+					gp.playSE(1);
 					gp.gameState = gp.playState;
 					gp.ui.dialogoInicial();
+					gp.playMusic(0);
 				}
 				if (gp.ui.commandNum == 1) {
 					gp.ui.titleScreenState = 2;
@@ -162,6 +172,9 @@ public class KeyHandler implements KeyListener {
 		}
 		if (code == KeyEvent.VK_ENTER) {
 			enterPressed = true;
+		}
+		if (code == KeyEvent.VK_F) {
+			shotKeyPressed = true;
 		}
 		if (code == KeyEvent.VK_C) {
 			gp.gameState = gp.characterState;
@@ -207,21 +220,25 @@ public class KeyHandler implements KeyListener {
 		if (code == KeyEvent.VK_W) {
 			if(gp.ui.slotRow != 0) {
 				gp.ui.slotRow--;
+				gp.playSE(7);
 			}
 		}
 		if (code == KeyEvent.VK_A) {
 			if(gp.ui.slotCol != 0) {
 				gp.ui.slotCol--;
+				gp.playSE(7);
 			}
 		}
 		if (code == KeyEvent.VK_S) {
 			if(gp.ui.slotRow != 1) {
 				gp.ui.slotRow++;
+				gp.playSE(7);
 			}
 		}
 		if (code == KeyEvent.VK_D) {
 			if(gp.ui.slotCol != 4) {
 				gp.ui.slotCol++;
+				gp.playSE(7);
 			}
 		}
 		if (code == KeyEvent.VK_ENTER) {
@@ -245,6 +262,9 @@ public class KeyHandler implements KeyListener {
 		}
 		if (code == KeyEvent.VK_D) {
 			rightPressed = false;
+		}
+		if (code == KeyEvent.VK_F) {
+			shotKeyPressed = false;
 		}
 
 	}

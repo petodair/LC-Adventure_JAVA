@@ -45,6 +45,7 @@ public class Entity {
 	public int spriteCounter = 0;
 	public int actionLockCounter = 0;
 	public int invencibleCounter = 0;
+	public int shotAvailableCounter = 0;
 	int dyingCounter = 0;
 	int hpBarCounter = 0;
 	int damageInfoCounter = 0;
@@ -54,6 +55,8 @@ public class Entity {
 	public int speed;
 	public int maxLife;
 	public int life;
+	public int maxPositiveEnergy;
+	public int positiveEnergy;
 	public int level;
 	public int strength;
 	public int energy;
@@ -66,11 +69,14 @@ public class Entity {
 	public int coin;
 	public Entity currentWeapon;
 	public Entity currentShield;
+	public Projectile projectile;
 
 	// ATRIBUTOS DO ITEM
 	public int attackValue;
 	public int defenseValue;
 	public String detalhes = "";
+	public int useCost;
+	public int value;
 	
 	//TIPO
 	public int type; // 0 = player, 1 = npc, 2 = monster
@@ -117,6 +123,10 @@ public class Entity {
 		}
 
 	}
+	
+	public void use(Entity entity) {
+		
+	}
 
 	public void update() {
 
@@ -131,16 +141,7 @@ public class Entity {
 
 		// SE FOR TIPO 2(MONSTRO) TOCAR NO PLAYER
 		if (this.type == type_monster && contactPlayer == true) {
-			if (gp.player.invencible == false) {
-				gp.playSE(6);
-
-				int damage = attack - gp.player.defense;
-				if (damage < 0) {
-					damage = 0;
-				}
-				gp.player.life -= damage;
-				gp.player.invencible = true;
-			}
+			damagePlayer(attack);
 		}
 
 		// SE A COLISÃO FOR FALSA O PLAYER PODE SE MOVER
@@ -171,7 +172,8 @@ public class Entity {
 			}
 			spriteCounter = 0;
 		}
-
+		
+		//DEIXA INVENCÍVEL POR 40 QUADROS
 		if (invencible == true) {
 			invencibleCounter++;
 			if (invencibleCounter > 40) {
@@ -179,8 +181,23 @@ public class Entity {
 				invencibleCounter = 0;
 			}
 		}
+		if (shotAvailableCounter < 30) {
+			shotAvailableCounter++;
+		}
 	}
+    public void damagePlayer(int attack) {
+    	
+    	if (gp.player.invencible == false) {
+			gp.playSE(6);
 
+			int damage = attack - gp.player.defense;
+			if (damage < 0) {
+				damage = 0;
+			}
+			gp.player.life -= damage;
+			gp.player.invencible = true;
+		}
+    }
 	public void draw(Graphics2D g2) {
 
 		BufferedImage image = null;
