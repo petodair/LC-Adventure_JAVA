@@ -142,7 +142,6 @@ public class KeyHandler implements KeyListener {
 					gp.playSE(1);
 					gp.gameState = gp.playState;
 					gp.ui.dialogoInicial();
-					gp.playMusic(0);
 				}
 				if (gp.ui.commandNum == 1) {
 					gp.ui.titleScreenState = 2;

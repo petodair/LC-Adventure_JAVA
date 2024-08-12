@@ -89,7 +89,7 @@ public class EventHandler {
 			gp.ui.currentDialogue="Você descansou em sua casa.\n"
 					+ "sua saúde foi recuperada.";
 			gp.player.life = gp.player.maxLife;
-			gp.player.positiveEnergy = gp.player.positiveEnergy;
+			gp.player.positiveEnergy = gp.player.maxPositiveEnergy;
 			
 			//MONSTRONS REESPAWNAM
 			gp.aSetter.setMonster();

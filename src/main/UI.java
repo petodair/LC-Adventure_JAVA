@@ -264,6 +264,10 @@ public class UI {
 				g2.drawString(">", x - gp.tileSize, y);
 			}
 		} else if (titleScreenState == 1) {
+			
+			//ZERAR PLANO DE FUNDO
+			g2.setColor(new Color(0,0,0));
+			g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 
 			try {
 				if (commandNum == 0) {
@@ -305,6 +309,9 @@ public class UI {
 			}
 
 		} else if (titleScreenState == 2) {
+			
+			g2.setColor(new Color(0,0,0));
+			g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 
 			g2.setColor(Color.white);
 			g2.setFont(g2.getFont().deriveFont(42F));
@@ -320,6 +327,10 @@ public class UI {
 		}
 
 		else if (titleScreenState == 3) {
+			
+			//ZERAR PLANO DE FUNDO
+			g2.setColor(new Color(0,0,0));
+			g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 
 			g2.setColor(Color.white);
 			g2.setFont(g2.getFont().deriveFont(42F));

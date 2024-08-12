@@ -67,9 +67,13 @@ public class Entity {
 	public int exp;
 	public int nextLevelExp;
 	public int coin;
+	public int flechas;
 	public Entity currentWeapon;
 	public Entity currentShield;
 	public Projectile projectile;
+	public int gender;
+	public int man = 1;
+	public int woman = 2;
 
 	// ATRIBUTOS DO ITEM
 	public int attackValue;
@@ -88,6 +92,8 @@ public class Entity {
 	public final int type_shield = 5;
 	public final int type_incomum = 6;
 	public final int type_consumable = 7;
+	public final int type_pickupOnly = 8;
+	public final int type_bow = 9;
 
 	public Entity(GamePanel gp) {
 		this.gp = gp;
@@ -127,6 +133,52 @@ public class Entity {
 	public void use(Entity entity) {
 		
 	}
+	
+	public void checkDrop() {}
+	
+	public void dropItem(Entity droppedItem) {
+		for(int i = 0; i < gp.obj.length; i++) {
+			if(gp.obj[i] == null) {
+				gp.obj[i] = droppedItem;
+				gp.obj[i].worldX = worldX; //POSIÇAO DO MONSTRO DERRORTADO
+				gp.obj[i].worldY = worldY;
+				break;
+			}
+		}
+	}
+	
+	public Color getParticleColor() {
+		Color color = null;
+		return color;
+	}
+	public int getParticleSize() {
+		int size = 0;
+		return size;
+	}
+	public int getParticleSpeed() {
+		int speed = 0;
+		return speed;
+	}
+	public int getParticleMaxLife() {
+		int maxLife = 0;
+		return maxLife;
+	}
+	public void generateParticle(Entity generator, Entity target) {
+		
+		Color color = generator.getParticleColor();
+		int size = generator.getParticleSize();
+		int speed = generator.getParticleSpeed();
+		int maxLife = generator.getParticleMaxLife();
+		
+		Particle p1 = new Particle(gp, target, color, size, speed, maxLife, -2, -1);
+		Particle p2 = new Particle(gp, target, color, size, speed, maxLife, 2, -1);
+		Particle p3 = new Particle(gp, target, color, size, speed, maxLife, -2, 1);
+		Particle p4 = new Particle(gp, target, color, size, speed, maxLife, 2, 1);
+		gp.particleList.add(p1);
+		gp.particleList.add(p2);
+		gp.particleList.add(p3);
+		gp.particleList.add(p4);
+	}
 
 	public void update() {
 
@@ -137,6 +189,7 @@ public class Entity {
 		gp.cChecker.checkObject(this, false);
 		gp.cChecker.checkEntity(this, gp.npc);
 		gp.cChecker.checkEntity(this, gp.monster);
+		gp.cChecker.checkEntity(this, gp.iTile);
 		boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
 		// SE FOR TIPO 2(MONSTRO) TOCAR NO PLAYER

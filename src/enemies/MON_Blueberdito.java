@@ -5,6 +5,8 @@ import java.util.Random;
 import entity.Entity;
 import main.GamePanel;
 import object.OBJ_BShot;
+import object.OBJ_Casca_Blueberdito;
+import object.OBJ_Golden_Coin;
 
 public class MON_Blueberdito extends Entity{
 	
@@ -79,6 +81,21 @@ public class MON_Blueberdito extends Entity{
 		
 		actionLockCounter = 0;
 		direction = gp.player.direction;
+	}
+	public void checkDrop() {
+		
+		int i = new Random().nextInt(100)+1;
+		
+		//DEFINIR O DROP DO MONSTRO
+		if(i < 50) {
+			dropItem(new OBJ_Golden_Coin(gp));
+		}
+		if(i >= 50 && i < 75) {
+			dropItem(new OBJ_Casca_Blueberdito(gp));
+		}
+		if(i >= 75 && i < 100) {
+			
+		}
 	}
 
 }
