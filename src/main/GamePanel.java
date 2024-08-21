@@ -46,10 +46,11 @@ public class GamePanel extends JPanel implements Runnable {
 	int screenHeight2 = screenHeight;
 	BufferedImage tempScreen;
 	Graphics2D g2;
+	public boolean fullScreenOn = false;
 
 	public final int worldWidth = tileSize * maxWorldCol;
 	public final int worldHeight = tileSize * maxWorldRow;
-
+	Config config = new Config(this);
 	Thread gameThread;
 
 	TileManager tileM = new TileManager(this);
@@ -85,6 +86,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int pauseState = 2;
 	public final int dialogueState = 3;
 	public final int characterState = 4;
+	public final int optionsState = 5;
 
 	// FPS
 	int FPS = 59;
@@ -108,8 +110,10 @@ public class GamePanel extends JPanel implements Runnable {
 		tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB_PRE);
 		g2 = (Graphics2D) tempScreen.getGraphics();
 		
-		setFullScreen();
-
+		if(fullScreenOn == true) {
+			setFullScreen();
+		}
+		
 		this.add(campoNome);
 		campoNome.addActionListener(new ActionListener() {
 

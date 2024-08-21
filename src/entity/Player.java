@@ -229,7 +229,7 @@ public class Player extends Entity {
 				invencibleCounter = 0;
 			}
 		}
-		if (shotAvailableCounter < 60) {
+		if (shotAvailableCounter < 30) {
 			shotAvailableCounter++;
 		}
 
@@ -279,11 +279,12 @@ public class Player extends Entity {
 			//PROJÉTIL DO ARCO(FLECHA)
 			if(currentWeapon.type == type_bow) {
 				if(currentWeapon.projectile.alive == false && currentWeapon.projectile.haveResource(this) == true
-						&& shotAvailableCounter == 60) {
+						&& shotAvailableCounter == 30) {
 					
 					currentWeapon.projectile.set(this.worldX, this.worldY, direction, true, this);
 					currentWeapon.projectile.subtractResource(this);
 					gp.projectileList.add(currentWeapon.projectile);
+					shotAvailableCounter = 0;
 				}
 				
 			}

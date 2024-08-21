@@ -22,7 +22,7 @@ public class TileManager {
 		this.gp = gp;
 		
 		//ESSE 10 É A QUANTIDADE DE TIPOS DE TILES
-		tile = new Tile[50];
+		tile = new Tile[100];
 		mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 		
 		getTileImage();
@@ -55,22 +55,50 @@ public class TileManager {
 			setup(20, "020", false);
 			setup(20, "020", false);
 			setup(21, "021", false);
-			setup(22, "022", true);
-			setup(23, "023", true);
-			setup(24, "024", true);
-			setup(25, "025", true);
-			setup(26, "026", true);
-			setup(27, "027", true);
-			setup(28, "028", true);
-			setup(29, "029", true);
-			setup(30, "030", true);
-			setup(31, "031", true);
-			setup(32, "032", true);
-			setup(33, "033", true);
-			setup(34, "034", true);
+			setup(22, "022", false);
+			setup(23, "023", false);
+			setup(24, "024", false);
+			setup(25, "025", false);
+			setup(26, "026", false);
+			setup(27, "027", false);
+			setup(28, "028", false);
+			setup(29, "029", false);
+			setup(30, "030", false);
+			setup(31, "031", false);
+			setup(32, "032", false);
+			setup(33, "033", false);
+			setup(34, "034", false);
 			setup(35, "035", true);
 			setup(36, "036", false);
-			setup(37, "037", false);
+			setup(37, "037", true);
+			setup(38, "038", true);
+			setup(39, "039", true);
+			setup(40, "040", true);
+			setup(41, "041", true);
+			setup(42, "042", true);
+			setup(43, "043", true);
+			setup(44, "044", true);
+			setup(45, "045", true);
+			setup(46, "046", true);
+			setup(47, "047", true);
+			setup(48, "048", true);
+			setup(49, "049", true);
+			setup(50, "050", true);
+			setup(51, "051", true);
+			setup(52, "052", true);
+			setup(53, "053", true);
+			setup(54, "054", true);
+			setup(55, "055", true);
+			setup(56, "056", true);
+			setup(57, "057", true);
+			setup(58, "058", true);
+			setup(59, "059", true);
+			setup(60, "060", true);
+			setup(61, "061", true);
+			setup(62, "062", true);
+			setup(63, "063", true);
+			setup(64, "064", true);
+			setup(65, "065", true);
 	}
 	
 	public void setup(int index, String imageName, boolean collision) {

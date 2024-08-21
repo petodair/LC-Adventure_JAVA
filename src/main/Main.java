@@ -12,14 +12,16 @@ public class Main {
 		window.setResizable(false);
 		window.setTitle("Aventura 2D");
 		
-		//REMOVER BARRINHA DE CIMA DA JANELA
-		window.setUndecorated(true);
-		
 		GamePanel gamePanel = new GamePanel();
 		window.add(gamePanel);
 		
-		window.pack();
+		gamePanel.config.loadConfig();
+		if(gamePanel.fullScreenOn == true) {
+			//REMOVER BARRINHA DE CIMA DA JANELA
+			window.setUndecorated(true);
+		}
 		
+		window.pack();
 		
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);

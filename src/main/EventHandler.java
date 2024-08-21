@@ -45,7 +45,7 @@ public class EventHandler {
 		}
 		
 		if(canTouchEvent == true) {
-			if(hit(17,20,"any") == true) { damagePit(17,20,gp.dialogueState); }
+			//if(hit(17,20,"any") == true) { damagePit(17,20,gp.dialogueState); }
 			if(hit(21,19,"up") == true) { healingHouse(21,19,gp.dialogueState); }
 		}
 	}
