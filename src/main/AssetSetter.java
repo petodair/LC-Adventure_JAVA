@@ -1,9 +1,11 @@
 package main;
 
 import enemies.MON_Blueberdito;
+import entity.NPC_OldMan;
 import object.OBJ_Arco;
 import object.OBJ_Blueberry;
 import object.OBJ_Graveto;
+import object.OBJ_Sword;
 import tile_interactive.IT_Box;
 import tile_interactive.IT_Rock;
 
@@ -22,6 +24,10 @@ public class AssetSetter {
 		gp.obj[i].worldX = gp.tileSize*19;
 		gp.obj[i].worldY = gp.tileSize*57;
 		i++;
+		gp.obj[i] = new OBJ_Sword(gp);
+		gp.obj[i].worldX = gp.tileSize*19;
+		gp.obj[i].worldY = gp.tileSize*59;
+		i++;
 		gp.obj[i] = new OBJ_Blueberry(gp);
 		gp.obj[i].worldX = gp.tileSize*28;
 		gp.obj[i].worldY = gp.tileSize*18;
@@ -32,9 +38,9 @@ public class AssetSetter {
 		i++;
 	}
 	public void setNPC() {
-	   //gp.npc[0] = new NPC_OldMan(gp);
-	   //gp.npc[0].worldX = gp.tileSize*9;
-	   //gp.npc[0].worldY = gp.tileSize*13;
+	   gp.npc[0] = new NPC_OldMan(gp);
+	   gp.npc[0].worldX = gp.tileSize*22;
+	   gp.npc[0].worldY = gp.tileSize*20;
 	}
 	public void setMonster() {
 		int i = 0;

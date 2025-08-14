@@ -138,6 +138,7 @@ public class GamePanel extends JPanel implements Runnable {
 		GraphicsDevice gd = ge.getDefaultScreenDevice();
 		gd.setFullScreenWindow(Main.window);
 		
+
 		//PEGAR LARGURA E ALTURA DA TELA CHEIA
 		screenWidth2 = Main.window.getWidth();
 		screenHeight2 = Main.window.getHeight();

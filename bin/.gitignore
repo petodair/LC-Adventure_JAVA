@@ -1,10 +1,5 @@
-/projectile/
-/sound/
-/enemies/
 /entity/
 /main/
 /object/
 /tile/
 /tile_interactive/
-/tiles/
-/tiles_interactive/
